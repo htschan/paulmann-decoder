@@ -5,15 +5,12 @@ port = 5024
 count = 0
 
 
-
-
-
 def main():
     global remote_ip
     global port
     global count
 
-    # Body: send the SCPI commands *IDN? 10 times and print the return message
+    # Body: send the SCPI commands *IDN? and print the return message
     s = MySocket()
     s.connect(remote_ip, port)
 
@@ -21,10 +18,10 @@ def main():
     print(str(count) + ":: " + str(qStr))
 
     s.send(b'chdr off')
-    vdiv = s.query(b'c1:vdiv?')  # vertical volt / div
-    ofst = s.query(b'c1:ofst?')  # vertical offset
-    tdiv = s.query(b'tdiv?')  # time / div
-    sara = s.query(b'sara?')  # sampling rate
+    vdiv = float(s.query(b'c1:vdiv?').decode("utf-8")[2 :].strip())  # vertical volt / div
+    ofst = float(s.query(b'c1:ofst?').decode("utf-8")[2 :].strip())  # vertical offset
+    tdiv = float(s.query(b'tdiv?').decode("utf-8")[1 :].strip())  # time / div
+    sara = float(s.query(b'sara?').decode("utf-8")[2 :].strip())  # sampling rate
     s.send(b'WFSU SP,0,NP,10,FP,1000')
 
     qStr = s.query(b'C1:WF? DAT2')
