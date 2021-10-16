@@ -2,6 +2,7 @@ import socket
 import sys
 import time
 
+
 class MySocket:
     def __init__(self, sock=None):
         if sock is None:
@@ -15,7 +16,7 @@ class MySocket:
             self.sock.connect((host, port))
         except socket.error:
             print("Failed to connect tp ip " +
-                  remote_ip + " with port " + port)
+                  host + " with port " + port)
             sys.exit()
 
     def close(self):
@@ -40,7 +41,7 @@ class MySocket:
             bytes_recd = 0
             finished = False
             while not finished:
-                chunk = self.sock.recv(2048)
+                chunk = self.sock.recv(4 * 2048)
                 if chunk == b'' or len(chunk) < 2048:
                     finished = True
                 chunks.append(chunk)
